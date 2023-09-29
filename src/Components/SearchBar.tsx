@@ -1,6 +1,7 @@
+import { FC, InputHTMLAttributes } from "react";
 import { BsSearch } from "react-icons/bs";
-
-function SearchBar() {
+type SearchBarProps = InputHTMLAttributes<HTMLInputElement>
+const SearchBar:FC <SearchBarProps>= ()=> {
   return (
     <div className="relative">
       <input className="px-2 py-1 w-full rounded-full border border-black" type="text" placeholder="Search" />
