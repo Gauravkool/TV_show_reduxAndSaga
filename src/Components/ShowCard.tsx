@@ -4,11 +4,15 @@ import { FC } from "react";
 type ShowCartProps = {
   show: Show;
 };
+
+const placeholder =
+  "https://images.unsplash.com/photo-1556888335-95371827d5fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1631&q=80";
+
 const ShowCard: FC<ShowCartProps> = ({ show }) => {
   return (
     <div className="max-w-xs rounded-md shadow-md p-2 m-1">
       <img
-        src={show.image.medium}
+        src={show.image?.medium || show.image?.original || placeholder}
         alt=""
         className="object-cover object-center w-full rounded-t-md h-72"
       />

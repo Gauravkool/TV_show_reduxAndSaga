@@ -5,8 +5,9 @@ export type Show = {
   rating: {
     average?: number;
   };
-  image: {
+  image?: {
     medium: string;
+    original: string;
   };
   summary?: string;
 };

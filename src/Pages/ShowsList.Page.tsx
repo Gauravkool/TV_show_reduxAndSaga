@@ -12,9 +12,14 @@ function ShowListPage() {
   }, [query]);
   return (
     <div className="mt-2">
-      <SearchBar />
+      <SearchBar
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
       <div className="flex flex-wrap justify-center">
-        {shows.map(s=><ShowCard show={s}></ShowCard>)}
+        {shows.map((s) => (
+          <ShowCard key={s.id} show={s}></ShowCard>
+        ))}
       </div>
     </div>
   );
