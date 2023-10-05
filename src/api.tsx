@@ -13,7 +13,20 @@ export const searchShows = async (keyword: string) => {
 export const searchShows2 = (keyword: string) => {
   return axios
     .get<{ show: Show }[]>(BASE_URL + "search/shows?q=" + keyword)
-    .then((res) => res.data.map((item) => item.show));
+    .then((res) => {
+      const shows = res.data.map((item) => item.show);
+      const castPromises = [];
+      for (let i = 0; i < shows.length; i++) {
+        const castAndShowPromise = axios
+          .get(BASE_URL + "shows/" + shows[i].id + "/cast")
+          .then((res) => {
+            const cast = res.data.map((item: any) => item.person);
+            return { show: shows[i], cast };
+          });
+        castPromises.push(castAndShowPromise);
+      }
+      return Promise.all(castPromises);
+    });
 };
 
 export const loadShowDetail = async (showId: number) => {

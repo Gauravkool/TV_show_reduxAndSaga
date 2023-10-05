@@ -1,9 +1,10 @@
 import { call, put } from "redux-saga/effects";
-import { loadShowDetail, searchShows } from "../api";
+import { loadShowDetail, searchShows, searchShows2 } from "../api";
 import { Action } from "../actions";
 import { ShowsLoadedAction, showLoadedAction } from "../actions/Shows";
 
 export function* fetchShows(action: Action): Generator<any, any, any> {
+  searchShows2("game").then((res)=>console.log("response is", res))
   const shows = yield call(searchShows, action.payload);
   yield put(ShowsLoadedAction(shows));
 }
