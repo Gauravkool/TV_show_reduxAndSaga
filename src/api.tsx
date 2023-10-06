@@ -7,7 +7,18 @@ export const searchShows = async (keyword: string) => {
   const res = await axios.get<{ show: Show }[]>(
     BASE_URL + "search/shows?q=" + keyword
   );
-  return res.data.map((item) => item.show);
+  const shows = res.data.map((item) => item.show);
+  const castPromises = [];
+  for (let i = 0; i < shows.length; i++) {
+    castPromises.push(getCast(shows[i]));
+  }
+  return Promise.all(castPromises);
+};
+
+export const getCast = async (show: Show) => {
+  const castResponse = axios.get(BASE_URL + "shows/" + show.id + "/cast");
+  const cast = (await castResponse).data.map((item: any) => item.person);
+  return { show, cast };
 };
 
 export const searchShows2 = (keyword: string) => {
@@ -25,7 +36,7 @@ export const searchShows2 = (keyword: string) => {
           });
         castPromises.push(castAndShowPromise);
       }
-      return Promise.all(castPromises);
+      return castPromises;
     });
 };
 

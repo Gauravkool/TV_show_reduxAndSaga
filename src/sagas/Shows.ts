@@ -4,9 +4,9 @@ import { Action } from "../actions";
 import { ShowsLoadedAction, showLoadedAction } from "../actions/Shows";
 
 export function* fetchShows(action: Action): Generator<any, any, any> {
-  searchShows2("game").then((res)=>console.log("response is", res))
-  const shows = yield call(searchShows, action.payload);
-  yield put(ShowsLoadedAction(shows));
+  searchShows("game").then((res)=>console.log("response is", res))
+  // const shows = yield call(searchShows, action.payload);
+  // yield put(ShowsLoadedAction(shows));
 }
 export function* fetchShowsDetail(action: Action): Generator<any, any, any> {
   const show = yield call(loadShowDetail, action.payload);
