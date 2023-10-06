@@ -1,14 +1,14 @@
 import { call, put } from "redux-saga/effects";
-import { loadShowDetail, searchShows, searchShows2 } from "../api";
+import { loadShowDetail, searchShows } from "../api";
 import { Action } from "../actions";
-import { ShowsLoadedAction, showLoadedAction } from "../actions/Shows";
+import { showsLoadedAction } from "../slices/Shows";
 
 export function* fetchShows(action: Action): Generator<any, any, any> {
-  searchShows("game").then((res)=>console.log("response is", res))
-  // const shows = yield call(searchShows, action.payload);
-  // yield put(ShowsLoadedAction(shows));
+  const showsAndCast = yield call(searchShows, action.payload);
+  const shows = showsAndCast.map((item: any) => item.show);
+  yield put(showsLoadedAction(shows));
 }
 export function* fetchShowsDetail(action: Action): Generator<any, any, any> {
-  const show = yield call(loadShowDetail, action.payload);
-  yield put(showLoadedAction(show))
+  const shows = yield call(loadShowDetail, action.payload);
+  yield put(showsLoadedAction(shows));
 }

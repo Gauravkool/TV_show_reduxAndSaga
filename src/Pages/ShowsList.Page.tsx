@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import SearchBar from "../Components/SearchBar";
 import ShowCard from "../Components/ShowCard";
 import { Show } from "../models/Show";
-import { ShowsQueryChangeAction } from "../actions/Shows";
+import { showsQueryChangeAction } from "../slices/Shows";
 import { ConnectedProps, connect } from "react-redux";
 import { State } from "../store";
 import {
@@ -45,7 +45,7 @@ const mapStateToProps = (state: State) => {
 };
 
 const mapDispatchToProps = {
-  queryChange: ShowsQueryChangeAction,
+  queryChange: showsQueryChangeAction,
 };
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type ReduxProps = ConnectedProps<typeof connector>;
