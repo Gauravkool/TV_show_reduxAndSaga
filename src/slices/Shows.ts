@@ -1,23 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Show } from "../models/Show";
-import { normalize, schema } from "normalizr";
 
-export type State = {
-  shows: { [showId: number]: Show };
-  query_show: { [query: string]: number[] };
-  query: string;
-  show_loading: { [showId: number]: boolean };
-  loading: boolean;
-};
 
-const initialState: State = {
-  shows: {},
-  query_show: {},
+const showsAdaptor = createEntityAdapter<Show>();
+
+const initialState = showsAdaptor.getInitialState({
+  query_show: {} as { [query: string]: number[] },
   query: "",
-  show_loading: {},
+  show_loading: {} as { [showId: number]: boolean },
   loading: false,
-};
+});
+
+export type State = typeof initialState;
 
 export const showsSlice = createSlice({
   name: "shows",
@@ -25,19 +20,15 @@ export const showsSlice = createSlice({
   reducers: {
     loaded,
     queryChange,
+    showsDetailsLoaded: showsAdaptor.addOne,
   },
 });
 
 export function loaded(state: State, action: PayloadAction<Show[]>) {
   const shows = action.payload as Show[];
-  if (!shows || shows.length === 0) {
-    return;
-  }
-  const showSchema = new schema.Entity("shows");
-  const normalizeData = normalize(shows, [showSchema]);
+  state.query_show[state.query] = shows.map((s) => s.id);
   state.loading = false;
-  state.query_show[state.query] = normalizeData.result;
-  state.shows = { ...state.shows, ...normalizeData.entities.shows };
+  showsAdaptor.addMany(state, action);
 }
 
 export function queryChange(state: State, action: PayloadAction<string>) {
@@ -50,6 +41,7 @@ const { actions, reducer: showsReducer } = showsSlice;
 export const {
   loaded: showsLoadedAction,
   queryChange: showsQueryChangeAction,
+  showsDetailsLoaded: showLoadedAction,
 } = actions;
 
 export default showsReducer;

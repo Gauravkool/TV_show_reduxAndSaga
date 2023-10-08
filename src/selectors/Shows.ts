@@ -10,7 +10,7 @@ export const showsQuerySelector = createSelector(
 
 export const showsMapSelector = createSelector(
   showStateSelector,
-  (showsState) => showsState.shows
+  (showsState) => showsState.entities
 );
 
 export const queryShowMapSelector = createSelector(
